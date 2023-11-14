@@ -69,14 +69,13 @@ python your_script_name.py
 7. Follow the same process for different persons and optimize thresholds according to your specific application.
 
 ## PROGRAM:
-```PYTHON
-import cv2
+```PYTHONimport cv2
 import os
 import dlib
 import numpy as np
 
 # Set the paths for the input files and the output directory
-video_file = 'Output/v1.mov'
+video_file = 'Output/v5.mov'
 input_face_image = 'Output/inputperson1.png'
 output_dir = "Output/Result"
 os.makedirs(output_dir, exist_ok=True)
@@ -100,12 +99,15 @@ with open('coco.names', 'r') as f:
     classes = f.read().strip().split('\n')
 output_layers = net.getUnconnectedOutLayersNames()
 
+# Calculate histogram for input image
+input_hist = cv2.calcHist([input_image], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+input_hist = cv2.normalize(input_hist, input_hist).flatten()
+
 # Open video file for processing
 video_capture = cv2.VideoCapture(video_file)
 frame_rate = int(video_capture.get(cv2.CAP_PROP_FPS))
 frame_count = 0
-frame_number = 1
-
+frame_number=0
 while True:
     ret, frame = video_capture.read()
     if not ret:
@@ -115,57 +117,42 @@ while True:
     if frame_count % frame_rate == 0:
         frame_name = f"{output_dir}/frame_{frame_number:04d}.jpg"
         frame_number += 1
-
         # Face recognition part
         frame_faces = face_detector(frame)
         for face in frame_faces:
             landmarks = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")(frame, face)
             frame_descriptor = face_rec_model.compute_face_descriptor(frame, landmarks)
             distance = np.linalg.norm(np.array(input_face_descriptor) - np.array(frame_descriptor))
-            if distance < 0.4:
-                x, y, w, h = face.left(), face.top(), face.width(), face.height()
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.imwrite(frame_name, frame)
-                print(f"Match found in {frame_name}, Face Distance: {distance}")
-            else:
-                print("Face match not found")
 
-        # YOLO object detection for clothing matching
-        blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
-        net.setInput(blob)
-        outs = net.forward(output_layers)
+            # YOLO object detection for clothing matching
+            blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+            net.setInput(blob)
+            outs = net.forward(output_layers)
 
-        for out in outs:
-            for detection in out:
-                scores = detection[5:]
-                class_id = np.argmax(scores)
-                confidence = scores[class_id]
-                if confidence > 0.5 and class_id == 0:  # Class ID 0 corresponds to 'person'
-                    center_x = int(detection[0] * frame.shape[1])
-                    center_y = int(detection[1] * frame.shape[0])
-                    w = int(detection[2] * frame.shape[1])
-                    h = int(detection[3] * frame.shape[0])
+            for out in outs:
+                for detection in out:
+                    scores = detection[5:]
+                    class_id = np.argmax(scores)
+                    confidence = scores[class_id]
+                    if confidence > 0.5 and class_id == 0:  # Class ID 0 corresponds to 'person'
+                        x, y, w, h = face.left(), face.top(), face.width(), face.height()
 
-                    x = int(center_x - w / 2)
-                    y = int(center_y - h / 2)
+                        # Clothing color analysis
+                        person_roi = frame[y:y + h, x:x + w]
+                        person_hist = cv2.calcHist([person_roi], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+                        person_hist = cv2.normalize(person_hist, person_hist).flatten()
 
-                    person_roi = frame[y:y + h, x:x + w]
+                        bhattacharyya_distance = cv2.compareHist(input_hist, person_hist, cv2.HISTCMP_BHATTACHARYYA)
+                        threshold = 0.4
 
-                    person_hist = cv2.calcHist([person_roi], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
-                    person_hist = cv2.normalize(person_hist, person_hist).flatten()
-
-                    bhattacharyya_distance = cv2.compareHist(input_hist, person_hist, cv2.HISTCMP_BHATTACHARYYA)
-                    threshold = 0.4
-
-                    if bhattacharyya_distance < threshold:
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        cv2.imwrite(frame_name, frame)
-                        print(f"Match found in {frame_name}, Clothing Distance: {bhattacharyya_distance}")
-                    else:
-                        print("Clothing match not found")
+                        if distance < 0.4 or bhattacharyya_distance < threshold:
+                            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 8)
+                            cv2.imwrite(frame_name, frame)
+                            print(f"Match found in {frame_name}")
 
 video_capture.release()
 cv2.destroyAllWindows()
+
 
 ```
 ## OUTPUT:
