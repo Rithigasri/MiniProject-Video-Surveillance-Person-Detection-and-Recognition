@@ -70,14 +70,13 @@ python your_script_name.py
 
 ## PROGRAM:
 ```PYTHON
-
 import cv2
 import os
 import dlib
 import numpy as np
 
 # Set the paths for the input files and the output directory
-video_file = 'Output/v1.mov'
+video_file = 'Output/v5.mov'
 input_face_image = 'Output/inputperson1.png'
 output_dir = "Output/Result"
 os.makedirs(output_dir, exist_ok=True)
@@ -117,19 +116,15 @@ while True:
         frame_name = f"{output_dir}/frame_{frame_number:04d}.jpg"
         frame_number += 1
 
+        # Initialize variables to keep track of matches for the entire frame
+        match_found = False
+
         # Face recognition part
         frame_faces = face_detector(frame)
         for face in frame_faces:
             landmarks = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")(frame, face)
             frame_descriptor = face_rec_model.compute_face_descriptor(frame, landmarks)
             distance = np.linalg.norm(np.array(input_face_descriptor) - np.array(frame_descriptor))
-            if distance < 0.4:
-                x, y, w, h = face.left(), face.top(), face.width(), face.height()
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.imwrite(frame_name, frame)
-                print(f"Match found in {frame_name}, Face Distance: {distance}")
-            else:
-                print("Face match not found")
 
         # YOLO object detection for clothing matching
         blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
@@ -158,12 +153,17 @@ while True:
                     bhattacharyya_distance = cv2.compareHist(input_hist, person_hist, cv2.HISTCMP_BHATTACHARYYA)
                     threshold = 0.4
 
-                    if bhattacharyya_distance < threshold:
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        cv2.imwrite(frame_name, frame)
-                        print(f"Match found in {frame_name}, Clothing Distance: {bhattacharyya_distance}")
-                    else:
-                        print("Clothing match not found")
+                    if bhattacharyya_distance < threshold and distance < threshold:
+                        match_found = True
+
+        # Check if any match is found for the entire frame
+        if match_found:
+            # Draw bounding box and save the frame
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 8)
+            cv2.imwrite(frame_name, frame)
+            print(f"Match found in {frame_name}, Face Distance: {distance}, Clothing Distance: {bhattacharyya_distance}")
+        else:
+            print("Match not found")
 
 video_capture.release()
 cv2.destroyAllWindows()
