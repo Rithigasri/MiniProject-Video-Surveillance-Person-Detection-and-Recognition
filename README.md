@@ -32,10 +32,10 @@ Managing the output of matched frames, preventing duplication or flooding of the
 ### Overall Architecutre Diagram:
 ![Overall](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/8b458c89-c981-420a-9852-c7c601212489)
 
-### Face Detection and Recognition - Arcitecture:
+### Face Detection and Recognition - Architecture:
 ![Architecture](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/12799531-5b65-4c33-819a-b6060e008488)
 
-### Clothing Color Analysis - Arcitecture:
+### Clothing Color Analysis - Architecture:
 ![image](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/6a7dab30-9534-4877-9c83-f28b7512b3da)
 
 ## INSTALLATION:
