@@ -30,13 +30,13 @@ Managing the output of matched frames, preventing duplication or flooding of the
 
 ## ARCHITECTURAL FLOW DIAGRAM:
 ### Overall Architecutre Diagram:
-![image](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/3528ea5e-ac01-49cb-9186-885626be2dd1)
+![Overall](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/8b458c89-c981-420a-9852-c7c601212489)
 
 ### Face Detection and Recognition - Arcitecture:
-![image](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/0bcd5b18-34cf-452f-8e08-9b4ca57f336e)
+![Architecture](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/12799531-5b65-4c33-819a-b6060e008488)
 
 ### Clothing Color Analysis - Arcitecture:
-![image](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/f42c029c-5e5e-4f86-a4b3-428e1c968269)
+![image](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/6a7dab30-9534-4877-9c83-f28b7512b3da)
 
 ## INSTALLATION:
 1. Clone the repository:
@@ -169,6 +169,15 @@ cv2.destroyAllWindows()
 
 ```
 ## OUTPUT:
+* INPUT PERSON:
+![inputperson1](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/22bc2250-d210-40db-9896-806b609498e7)
+* MATCHING FRAMES [SAMPLE]:
+![frame_0003](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/6ff51db0-30dc-4ff9-b857-cc15ec36a0b2)
+![frame_0004](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/63b7bddc-4f4b-4d2e-8cf3-4d6245c4692d)
+![frame_0005](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/a3e24d95-4e1f-4585-9ab6-4cfcb513c1ce)
+![frame_0135](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/7b3ce8c2-a0d5-4b96-afc3-1ba60fd2662e)
+![frame_0163](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/c0fde9e9-bb10-48f6-98f8-a85b14de0d0f)
+![frame_0164](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/b758349a-bf06-4e9d-8f5e-54e432cd7d50)
 
 ## RESULT:
 In conclusion, our project combines the power of face recognition using dlib and clothing color analysis with color histogram and Bhattacharyya distance to provide a comprehensive solution for recognizing a person in a given video. By utilizing dlib, we can accurately identify and track individuals by their facial features. Additionally, the incorporation of clothing color analysis using color histograms and Bhattacharyya distance allows us to further enhance recognition accuracy.<br/>
