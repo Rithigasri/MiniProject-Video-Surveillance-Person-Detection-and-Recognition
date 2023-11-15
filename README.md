@@ -169,9 +169,9 @@ video_capture.release()
 cv2.destroyAllWindows()
 ```
 ## OUTPUT:
-* INPUT PERSON:  
-![inputperson1](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/22bc2250-d210-40db-9896-806b609498e7)  
-* MATCHING FRAMES [SAMPLE]:  
+* INPUT PERSON:<br/>
+![inputperson1](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/22bc2250-d210-40db-9896-806b609498e7)  <br/>
+* MATCHING FRAMES [SAMPLE]:  <br/>
 ![frame_0003](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/6ff51db0-30dc-4ff9-b857-cc15ec36a0b2)
 ![frame_0004](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/63b7bddc-4f4b-4d2e-8cf3-4d6245c4692d)
 ![frame_0005](https://github.com/Rithigasri/MiniProject-Video-Surveillance-Person-Detection-and-Recognition/assets/93427256/a3e24d95-4e1f-4585-9ab6-4cfcb513c1ce)
